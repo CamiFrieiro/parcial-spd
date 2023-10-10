@@ -5,6 +5,7 @@ CAMILA FRIEIRO - 1B
 Parte 1: Contador y 7 segmentos
 ----
 [![](https://i.ibb.co/826zXbR/contador.png)](https://github.com/CamiFrieiro/parcial-spd/blob/main/Img/contador.png)
+
 Descripcion
 ----
 Es un contador del rango 0 a 99, utilizando 2 displays de 7 segmentos y 3 pulsadores para controlarlo.
