@@ -10,7 +10,7 @@ Descripcion
 ----
 Es un contador del rango 0 a 99, utilizando 2 displays de 7 segmentos y 3 pulsadores para controlarlo.
 Contara con un:
-+ Pulsador que iniciara el contador desde 00 en forma ascedente
++ Pulsador que iniciara el contador desde 00 en forma ascendente
 + Pulsador que disminuira el contador
 + Pulsador que reseteara desde 00
 
