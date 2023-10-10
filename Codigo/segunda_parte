@@ -1,0 +1,220 @@
+/*
+---------------------------------------------------------------------
+Parte 2: Modificación con Interruptor Deslizante y Números Primos
+Modifica el proyecto de la Parte 1 de la siguiente manera:
+1. Sustituye uno de los botones por un interruptor deslizante (switch) de dos posiciones.
+Dependiendo de la posición del interruptor, el display debe mostrar o bien el contador (como
+en la Parte 1) o los números primos en el rango de 0 a 99.
+
+2. Investiga un componente electrónico adicional que podría mejorar este proyecto.
+Proporciona una descripción detallada del componente, su función y cómo se podría
+integrar en el proyecto.
+
+-Motor de cc
+-Motor de aficionado
+
+Investigar en la semana y agregar uno de los siguientes componentes
+-Sensor de flexión
+-Sensor de fuerza
+-Sensor de temperatura
+---------------------------------------------------------------------
+*/
+
+#define segB 11
+#define segA 10
+#define segF 9
+#define segG 8
+#define segE 7
+#define segD 6
+#define segC 5
+#define INTERRUPTOR_DESLIZANTE 2 // interruptor deslizante
+#define UNIDAD A4 // Display de unidades
+#define DECENA A5 // Display de decenas
+#define motor 13  // Motor
+#define sensor A0 // Sensor de temperatura
+#define APAGADOS 0
+#define tiempoDisplayON 450
+#define intervaloDisplay 500 // Cambia este valor para ajustar la velocidad del display (en milisegundos)
+
+int contador = 0; // Contador
+int interruptor = 0; // inicializacion del interrumptor deslizante
+int temperatura = 0; //inicializacion de temperatura
+bool interruptorEncendido = false; // para saber si esta el interrumptor esta en on o off (true o false)
+unsigned long ultimoTiempoDisplay = 0; // ultima actualización del display
+int numeroPrimoActual = 0; // numero primo a mostrar
+
+void setup() {
+  pinMode(INTERRUPTOR_DESLIZANTE, INPUT_PULLUP);
+  pinMode(segA, OUTPUT);
+  pinMode(segB, OUTPUT);
+  pinMode(segC, OUTPUT);
+  pinMode(segD, OUTPUT);
+  pinMode(segE, OUTPUT);
+  pinMode(segF, OUTPUT);
+  pinMode(segG, OUTPUT);
+  pinMode(UNIDAD, OUTPUT);
+  pinMode(DECENA, OUTPUT);
+  pinMode(motor, OUTPUT);
+  printDigit(0); // Inicializa el display
+  Serial.begin(9600);
+}
+
+void loop() {
+  interruptor = digitalRead(INTERRUPTOR_DESLIZANTE);  
+  temperatura = analogRead(sensor);
+
+  // segun la posicion del interruptor muestra contador o numeros primos
+  if (interruptor == 0) {
+    interruptorEncendido = false;     // Si el interruptor esta en false muestra nueros primos
+    unsigned long tiempoActual = millis();  //usamos millis
+    if (tiempoActual - ultimoTiempoDisplay >= intervaloDisplay) {
+      ultimoTiempoDisplay = tiempoActual;
+      do {
+        numeroPrimoActual++;
+        if (numeroPrimoActual > 99) {
+          numeroPrimoActual = 0;
+        } 
+      } while (!esPrimo(numeroPrimoActual));
+      imprimirContador(numeroPrimoActual);
+    }
+  } else {
+    interruptorEncendido = true;     // si esta en true muestra el contador
+    unsigned long tiempoActual = millis();
+    if (tiempoActual - ultimoTiempoDisplay >= intervaloDisplay) {
+      ultimoTiempoDisplay = tiempoActual;
+      contador++;
+      if (contador > 99) {
+        contador = 0;
+      }
+      imprimirContador(contador);
+    }
+  }
+  controlarMotor(temperatura);
+}
+
+bool esPrimo(int numero) {   //funcion para buscar numeros primos
+  if (numero <= 1) return false;
+  if (numero <= 3) return true;
+  if (numero % 2 == 0 || numero % 3 == 0) return false;
+  for (int i = 5; i * i <= numero; i += 6) {
+    if (numero % i == 0 || numero % (i + 2) == 0) return false;
+  }
+  return true;
+}
+
+void printDigit(int digito) {
+  digitalWrite(segA, LOW);
+  digitalWrite(segB, LOW);
+  digitalWrite(segC, LOW);
+  digitalWrite(segD, LOW);
+  digitalWrite(segE, LOW);
+  digitalWrite(segF, LOW);
+  digitalWrite(segG, LOW);
+  switch (digito) {
+    case 0:
+      digitalWrite(segA, HIGH);
+      digitalWrite(segB, HIGH);
+      digitalWrite(segC, HIGH);
+      digitalWrite(segD, HIGH);
+      digitalWrite(segE, HIGH);
+      digitalWrite(segF, HIGH);
+      break;
+    case 1:
+      digitalWrite(segB, HIGH);
+      digitalWrite(segC, HIGH);
+      break;
+    case 2:
+      digitalWrite(segA, HIGH);
+      digitalWrite(segB, HIGH);
+      digitalWrite(segD, HIGH);
+      digitalWrite(segE, HIGH);
+      digitalWrite(segG, HIGH);
+      break;
+    case 3:
+      digitalWrite(segA, HIGH);
+      digitalWrite(segB, HIGH);
+      digitalWrite(segC, HIGH);
+      digitalWrite(segD, HIGH);
+      digitalWrite(segG, HIGH);
+      break;
+    case 4:
+      digitalWrite(segB, HIGH);
+      digitalWrite(segC, HIGH);
+      digitalWrite(segF, HIGH);
+      digitalWrite(segG, HIGH);
+      break;
+    case 5:
+      digitalWrite(segA, HIGH);
+      digitalWrite(segC, HIGH);
+      digitalWrite(segD, HIGH);
+      digitalWrite(segF, HIGH);
+      digitalWrite(segG, HIGH);
+      break;
+    case 6:
+      digitalWrite(segA, HIGH);
+      digitalWrite(segC, HIGH);
+      digitalWrite(segD, HIGH);
+      digitalWrite(segE, HIGH);
+      digitalWrite(segF, HIGH);
+      digitalWrite(segG, HIGH);
+      break;
+    case 7:
+      digitalWrite(segA, HIGH);
+      digitalWrite(segB, HIGH);
+      digitalWrite(segC, HIGH);
+      break;
+    case 8:
+      digitalWrite(segA, HIGH);
+      digitalWrite(segB, HIGH);
+      digitalWrite(segC, HIGH);
+      digitalWrite(segD, HIGH);
+      digitalWrite(segE, HIGH);
+      digitalWrite(segF, HIGH);
+      digitalWrite(segG, HIGH);
+      break;
+    case 9:
+      digitalWrite(segA, HIGH);
+      digitalWrite(segB, HIGH);
+      digitalWrite(segC, HIGH);
+      digitalWrite(segD, HIGH);
+      digitalWrite(segE, HIGH);
+      digitalWrite(segF, HIGH);
+      digitalWrite(segG, HIGH);
+      break;
+  }
+}
+
+void prendeDigito(int digito) {
+  if (digito == UNIDAD) {
+    digitalWrite(UNIDAD, LOW);
+    digitalWrite(DECENA, HIGH);
+    delay(tiempoDisplayON);
+  } else if (digito == DECENA) {
+    digitalWrite(UNIDAD, HIGH);
+    digitalWrite(DECENA, LOW);
+    delay(tiempoDisplayON);
+  } else {
+    digitalWrite(UNIDAD, HIGH);
+    digitalWrite(DECENA, HIGH);
+  }
+}
+
+void imprimirContador(int contar) {
+  int decenas = contar / 10;
+  int unidades = contar % 10;
+
+  prendeDigito(DECENA);
+  printDigit(decenas);
+
+  prendeDigito(UNIDAD);
+  printDigit(unidades);
+}
+
+void controlarMotor(float temperatura) {  //funcion para prender y apagar el motor
+  if (temperatura < 184) {   /// Alrededor de 44°C
+    digitalWrite(motor, LOW);
+  } else {
+    digitalWrite(motor, HIGH);
+  }
+}
+
