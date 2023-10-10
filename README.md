@@ -43,7 +43,7 @@ Algo parecido pasara con la logica en "DECENA" y "RESET" (el pulsador numero 3)
 
 
 
-** PRINT COUNT**
+**PRINT COUNT**
 
 Anteriormente se ha definido una funcion donde se define cada numero del 0 al 9 con los segmentos.
 Esta funcion es para mostrar esos numero en los displays.
@@ -63,7 +63,7 @@ void printContador(int contar) {
 Para saber en cual de los dos displays corresponde creamos la variable "contar" donde realizamos un calculo para determinar unidad o decena.
 Despues de se llama a la funcion printDigit (donde estan definidos los segmentos)
 
-**  KEYPRESSED**
+**KEYPRESSED**
 
 Esta funcion esta relacionado con el manejo de los pulsadores
 
@@ -157,12 +157,12 @@ Tambien al proyecto se le agrego un Motor CC y un Sensor de Temperatura, donde e
 
 Componentes agregados
 ----
-** MOTOR CC**
+**MOTOR CC**
 
 El motor cc o motor de corriente continua es un componente que convierte la energía electrica en movimiento mecanico.
 Es una maquina que utiliza electricidad para girar y realizar trabajos mecanicos . El motor necesitara un suministro estable de alimentacion y debera asegurarse de que tanto el cableado como la tension de entrada son los correctos.
 
-** SENSOR DE TEMPERATURA**
+**SENSOR DE TEMPERATURA**
 
 Es un dispositivo que se usa para medir y detectar la temperatura de un entorno u objeto.
 Captura cambios en propiedades fisicas o electricas cuando la temperatura tiene alguna variacion, estos cambios los sensores los convierten en una señal la cual puede ser interpretada por un sistema electronico.
@@ -170,7 +170,7 @@ Se utiliza en cosas rutinarias como lo son: los termostatos en casas y son esenc
 
 Funciones Agregadas
 ----
-**  ES PRIMO**
+**ES PRIMO**
 
 Funcion que determina si un numero es primo o no
 
@@ -194,7 +194,7 @@ La funcion devuelve un valor booleano verdadero o falso dependiendo si es un num
 + Se realiza un bucle for para verificar si es divible por otros numeros mayores. Si el numero es divisible por "i" o por "i + 2" es falso
 + Si ninguna de las anterioes ocurre es verdadero
 
-**  CONTROLAR EL MOTOR**
+**CONTROLAR EL MOTOR**
 
 Funcion para apagar o prender el motor cc
 
@@ -209,7 +209,7 @@ void controlarMotor(float temperatura) {
 ```
 Basicamente se realiza un if donde como condicion se determina que el motor se mantendra apaga si la temperatura es menor a 184 (lo que equivale a alrededor de 40°C y si esta es mayor entonces se encedera.
 
-**  LOOP**
+**LOOP**
 
 ```cpp
 void loop() {
