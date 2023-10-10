@@ -1,0 +1,205 @@
+/*
+---------------------------------------------------------------------
+Parte 1: Contador de 0 a 99 con Display 7 Segmentos y Multiplexación
+Diseñar un contador de 0 a 99 utilizando dos displays de 7 segmentos y tres botones para
+controlar la cuenta. Debes implementar la técnica de multiplexación para mostrar los dígitos
+en los displays. El contador debe comenzar en 0 y debe ser capaz de aumentar o disminuir
+su valor en una unidad con los botones.
+---------------------------------------------------------------------
+*/
+
+#define segB 11
+#define segA 10
+#define segF 9
+#define segG 8
+#define segE 7
+#define segD 6
+#define segC 5
+#define SUBE 3
+#define BAJA 2
+#define RESET 4
+#define UNIDAD A4  // display de unidades
+#define DECENA A5  // display de decenas
+#define APAGADOS 0
+#define timeDisplayON 50  // Tiempo velocidad de display
+
+int contador = 0; 
+int sube = 1;
+int subePrevia = 1;
+int baja = 1;
+int bajaPrevia = 1;
+int reset = 1;
+int resetPrevia = 1;
+
+void setup() {
+  pinMode(BAJA, INPUT_PULLUP);
+  pinMode(SUBE, INPUT_PULLUP);
+  pinMode(RESET, INPUT_PULLUP);
+  pinMode(segA, OUTPUT);
+  pinMode(segB, OUTPUT);
+  pinMode(segC, OUTPUT);
+  pinMode(segD, OUTPUT);
+  pinMode(segE, OUTPUT);
+  pinMode(segF, OUTPUT);
+  pinMode(segG, OUTPUT);
+  pinMode(UNIDAD, OUTPUT);
+  pinMode(DECENA, OUTPUT);
+  printDigit(0);
+  Serial.begin(9600);
+}
+
+void loop() {  // contador 0 a 99
+  int pressed = keypressed();
+  if (pressed == SUBE) {
+    contador++;
+    if (contador > 99) {
+      contador = 0;
+    }
+  } else if (pressed == BAJA) {
+    contador--;
+    if (contador < 0) {
+      contador = 99;
+    }
+  } else if (pressed == RESET) {
+    contador = 0;
+  }
+
+  printContador(contador);
+}
+
+void printDigit(int digit) {
+  digitalWrite(segA, LOW);
+  digitalWrite(segB, LOW);
+  digitalWrite(segC, LOW);
+  digitalWrite(segD, LOW);
+  digitalWrite(segE, LOW);
+  digitalWrite(segF, LOW);
+  digitalWrite(segG, LOW);
+  switch (digit) {
+    case 0:
+      digitalWrite(segA, HIGH);
+      digitalWrite(segB, HIGH);
+      digitalWrite(segC, HIGH);
+      digitalWrite(segD, HIGH);
+      digitalWrite(segE, HIGH);
+      digitalWrite(segF, HIGH);
+      break;
+    case 1:
+      digitalWrite(segB, HIGH);
+      digitalWrite(segC, HIGH);
+      break;
+    case 2:
+      digitalWrite(segA, HIGH);
+      digitalWrite(segB, HIGH);
+      digitalWrite(segD, HIGH);
+      digitalWrite(segE, HIGH);
+      digitalWrite(segG, HIGH);
+      break;
+    case 3:
+      digitalWrite(segA, HIGH);
+      digitalWrite(segB, HIGH);
+      digitalWrite(segC, HIGH);
+      digitalWrite(segD, HIGH);
+      digitalWrite(segG, HIGH);
+      break;
+    case 4:
+      digitalWrite(segB, HIGH);
+      digitalWrite(segC, HIGH);
+      digitalWrite(segF, HIGH);
+      digitalWrite(segG, HIGH);
+      break;
+    case 5:
+      digitalWrite(segA, HIGH);
+      digitalWrite(segC, HIGH);
+      digitalWrite(segD, HIGH);
+      digitalWrite(segF, HIGH);
+      digitalWrite(segG, HIGH);
+      break;
+    case 6:
+      digitalWrite(segA, HIGH);
+      digitalWrite(segC, HIGH);
+      digitalWrite(segD, HIGH);
+      digitalWrite(segE, HIGH);
+      digitalWrite(segF, HIGH);
+      digitalWrite(segG, HIGH);
+      break;
+    case 7:
+      digitalWrite(segA, HIGH);
+      digitalWrite(segB, HIGH);
+      digitalWrite(segC, HIGH);
+      break;
+    case 8:
+      digitalWrite(segA, HIGH);
+      digitalWrite(segB, HIGH);
+      digitalWrite(segC, HIGH);
+      digitalWrite(segD, HIGH);
+      digitalWrite(segE, HIGH);
+      digitalWrite(segF, HIGH);
+      digitalWrite(segG, HIGH);
+      break;
+    case 9:
+      digitalWrite(segA, HIGH);
+      digitalWrite(segB, HIGH);
+      digitalWrite(segC, HIGH);
+      digitalWrite(segD, HIGH);
+      digitalWrite(segE, HIGH);
+      digitalWrite(segF, HIGH);
+      digitalWrite(segG, HIGH);
+      break;
+  }
+}
+
+void prendeDigito(int digito) {
+  if (digito == UNIDAD) {
+    digitalWrite(UNIDAD, LOW);
+    digitalWrite(DECENA, HIGH);
+    delay(timeDisplayON);
+  } else if (digito == DECENA) {
+    digitalWrite(UNIDAD, HIGH);
+    digitalWrite(DECENA, LOW);
+    delay(timeDisplayON);
+  } else {
+    digitalWrite(UNIDAD, HIGH);
+    digitalWrite(DECENA, HIGH);
+  }
+}
+
+void printContador(int contar) {  //funcion para poder visualizar en displays
+  int decenas = contar / 10;
+  int unidades = contar % 10;
+
+  prendeDigito(DECENA);
+  printDigit(decenas);
+
+  prendeDigito(UNIDAD);
+  printDigit(unidades);
+}
+
+int keypressed() { //funcion para el manejo de los pulsadores
+  sube = digitalRead(SUBE);
+  baja = digitalRead(BAJA);
+  reset = digitalRead(RESET);
+
+  if (sube == 1)
+    subePrevia = 1;
+  if (baja == 1)
+    bajaPrevia = 1;
+  if (reset == 1)
+    resetPrevia = 1;
+
+  if (sube == 0 && sube != subePrevia) {
+    subePrevia = sube;
+    return SUBE;
+  }
+  if (baja == 0 && baja != bajaPrevia) {
+    bajaPrevia = baja;
+    return BAJA;
+  }
+  if (reset == 0 && reset != resetPrevia) {
+    resetPrevia = reset;
+    return RESET;
+  }
+
+  return 0;
+}
+
