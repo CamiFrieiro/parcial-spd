@@ -276,12 +276,6 @@ El sensor de luz ambiental es un componente electronico que es utilizado para de
 
 Se la suele utilizar para cosas como controlar la iluminacion o ahorrar energia.
 
-**SENSOR DE TEMPERATURA**
-
-Es un dispositivo que se usa para medir y detectar la temperatura de un entorno u objeto.
-Captura cambios en propiedades fisicas o electricas cuando la temperatura tiene alguna variacion, estos cambios los sensores los convierten en una señal la cual puede ser interpretada por un sistema electronico.
-Se utiliza en cosas rutinarias como lo son: los termostatos en casas y son esenciales para medir la temperatura.
-
 Fue agregado en:
 ----
 **CONTROLAR EL MOTOR**
