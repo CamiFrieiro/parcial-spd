@@ -260,7 +260,62 @@ Link Bibliografia
 [Sensor de Temperatura](https://proyectoarduino.com/sensor-de-temperatura/ "Sensor de Temperatura")
 [Motor y Sensor](https://www.youtube.com/watch?v=MoHDZ5agMY4&t=370s "Motor y Sensor")
 
+#Parte 3: Sensor de Luz ambiental
+----
+[![](https://i.ibb.co/Fn0cSsQ/ambiental.jpg)](https://github.com/CamiFrieiro/parcial-spd/blob/main/Img/ambiental.jpg)
+
+Descripcion
+----
+En esta parte, dependiendo del numero de documento se agregara un componente al proyecto.
+Por lo tanto me toco un: **Sensor de luz ambiental**
+
+----
+**SENSOR DE LUZ AMBIENTAL**
+
+El sensor de luz ambiental es un componente electronico que es utilizado para detectar la luz del entorno que rodea al proyecto, cual es la intensidad de la luz. Su funcion es convertir esa intencidad en una señal electrica que pueda ser procesada por el arduino.
+
+Se la suele utilizar para cosas como controlar la iluminacion o ahorrar energia.
+
+**SENSOR DE TEMPERATURA**
+
+Es un dispositivo que se usa para medir y detectar la temperatura de un entorno u objeto.
+Captura cambios en propiedades fisicas o electricas cuando la temperatura tiene alguna variacion, estos cambios los sensores los convierten en una señal la cual puede ser interpretada por un sistema electronico.
+Se utiliza en cosas rutinarias como lo son: los termostatos en casas y son esenciales para medir la temperatura.
+
+Fue agregado en:
+----
+**CONTROLAR EL MOTOR**
+
+El sensor fue agregado como una condicion en la funcion perteneciente al encendido del motor:
+
+```cpp
+void controlarMotor(float temperatura, int luzAmbiental) {
+  if (temperatura < 184 && luzAmbiental < 800) {
+    digitalWrite(motor, HIGH);
+  } else {
+    digitalWrite(motor, LOW);
+  }
+}
+```
+Despues de haber conectado el sensor (incluida una resistencia para el mismo), se lo inicializo al comienzo del codigo y en el setup.
+Luego, para encencer el motor ahora no solo se necesitara que la temperatura sea menos a 184 (equivalente a 40 °C) sino que tambien la lectura del sensor de luz ambiental tiene que ser menor a 800.
+
+Cumplidas ambas condiciones el motor se encendera.
+
+Link Tinkercad
+----
+[Parte 3](https://www.tinkercad.com/things/dGwKWvHCBju-proyecto-parte-3/editel?sharecode=6zIIOl8pNfD8fH7yezvE-XdlrjnPV-MW09F3YUCFa9Q "Parte 3")
+
+Link Bibliografia
+----
+[Sensor de luz ambiental](https://www.youtube.com/watch?v=75QtrOT3Ig0 "Sensor de luz ambiental")
+
+[Sensor de luz ambiental](https://www.youtube.com/watch?v=kv6r6HzJDqw&t=43s "Sensor de luz ambiental")
+
 Observaciones
 ----
 A la hora de realizar la funcion de buscar el numero primo, intente hacerla de diferentes formas que al comienzo funcionaban pero al integrarlas al loop con el interrumptor no lo hacian.
 Ademas de que tambien al agregar esta funcion la multiplexacion se rompia y tantos los numeros primos como el contador en el display no coordinaban, esto parece haberse solucionado cuando implemente millis() a los numeros primos, pero la solucion no parece 100% efectiva ya que hay un delay entre displays mas notable que en la parte 1.
+
+En cuanto al sensor ambiental, originalmente queria integrarlo en relacion a los displays y las luces de los segmentos ya sea apagandolos o controlando la intensidad de ellas.
+Si bien pude hacer que esto funcionara de manera separada, al querer integrarlo al loop perteneciente al codigo no logre que funcionara y no pude encontrar el error porque en el serial.print parecia estar todo correcto.
